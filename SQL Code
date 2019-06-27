@@ -1,0 +1,687 @@
+********************************************************************************************************
+
+NOTE: The TO_DATE clause below can convert the default 'DD-MMM-YY' into a date format that you specify. 
+
+      The CONSTRAINT names follow a slightly different naming convention, but work the same.
+
+********************************************************************************************************
+
+
+CREATE TABLE Customer
+( CustNo	CHAR(4) NOT NULL,
+  CustFName	VARCHAR2(15) NOT NULL,
+  CustLName	VARCHAR2(15) NOT NULL,
+  CustADD	VARCHAR2(50),
+  CustCity	VARChAR2(20),
+  CustState	CHAR(2),
+  CustZip	CHAR(10),
+  CustPhone	VARCHAR2(15),
+ CONSTRAINT PKCustomer PRIMARY KEY (CustNo));
+
+CREATE TABLE Vehicle
+( VIN		VARCHAR2(15) NOT NUll,
+  Year		CHAR(4) NOT Null,
+  Make		VARCHAR2(20),
+  Model		VARCHAR2(20),
+  LicenseNo	VARCHAR2(8),
+  VehState	CHAR(2),
+  VehCity	VARCHAR2(2),
+  CustNo	CHAR(4) NOT NULL,
+ CONSTRAINT PKVehicle PRIMARY KEY (VIN),
+ CONSTRAINT FKCustNo FOREIGN KEY (CustNo) REFERENCES Customer);
+
+CREATE TABLE Part
+( PartNo	CHAR(4) NOT NULL,
+  PartDesc	VARCHAR2(50),
+  PartStk	INTEGER DEFAULT '0',
+  PartPPU	DECIMAL(6,2),
+  PartSz	VARCHAR2(20),
+ CONSTRAINT PKPart PRIMARY KEY (PartNo));
+
+CREATE TABLE RepairOrder
+( RepOrdNo		CHAR(4) NOT NULL,
+  RepOrdOdometer 	INTEGER,
+  RepOrdDate		DATE,
+  VIN	 		VARCHAR2(15) NOT NULL,
+ CONSTRAINT PKRepairOrder PRIMARY KEY (RepOrdNo),
+ CONSTRAINT FKVIN FOREIGN KEY (VIN) References Vehicle);
+
+Create Table PartUsed
+( RepOrdNo		CHAR(4) NOT NULL,
+  PartNo		CHAR(4) NOT NULL,
+  QtyUsed		INTEGER,
+ CONSTRAINT PKPartUsed PRIMARY KEY (RepOrdNo, PartNo),
+ CONSTRAINT FKRepOrdNo FOREIGN KEY (RepOrdNo) REFERENCES RepairOrder,
+ CONSTRAINT FKPartNo FOREIGN KEY (PartNo) REFERENCES Part);
+
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0001','Beth','Taylor','2396 Rafter Rd','Seattle','WA','98103','(206) 221-9021');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0002','Betty','Wise','4334 153rd NW', 'Seattle','WA','98178','(206) 445-6982');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0003','Bob','Mann','1109 Lorraine Cir.','Monroe','WA','98013','(206) 326-1234' );
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0004','Candy','Kendall','456 Pine St.','Seattle','WA','98105','(206) 523-1112');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0005','Harry','Sanders','1290 S. Hill Rd.','Fife','WA','98523','(306) 444-0092');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0006','Helen','Sibley','206 McCaffrey','Renton','WA','98006','(206) 624-0362');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0007','Homer','Wells','123 Main St.','Seattle','WA','98105','(206) 524-1461');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0008','Jerry','Wyatt','16212 123rd Ct.','Seattle','WA','98266','(206) 524-8145');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0009','Jim','Glussman','1432 E. Revenna','Seattle','WA','98266','(206) 445-2139');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0010','Larry','Styles','9825 S. Crest Lane','Bellevue','WA','98104','(425) 745-9980');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0011','Mike','Boren','642 Crest Ave.','Fife','WA','98523','(360) 444-5678');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0012','Ron','Thompson','789 122nd St.','Renton','WA','98666','(360) 747-2222');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0013','Sharon','Johnson','1223 Meyer Way','Fife','WA','98222','(360) 333-6666');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0014','Sheri','Gordon','336 HIll St.','Seattle','WA','98103','(206) 525-3344');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0015','Todd','Hayes','1400 NW 88th','Lynnwood','WA','98036','(206) 775-7689');
+
+INSERT INTO Customer
+(CustNo, CustFname, CustLName, CustADD,CustCity,CustState,CustZip,CustPhone)
+VALUES ('0016','Wally','Jones','411 Webber Ave.','Seattle','WA','98105','(206) 523-9957');
+
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('AZXS230I87','2001','Ford','Skylark','145UKI','WA','4','0010');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('BHGY08631Q','1998','Chevrolet','Blazer','567WER','WA','8','0007');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('GHL39789UI','1993','Honda','Del Sol','123XYZ','WA','4','0013');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('IOMEQ54397','2000','Buick','Regal','367ASZ','WA','8','0002');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('JHMCCF673Q','1992','Honda','Civic Si','367ABC' , 'WA','4','0008');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('JHMEC3348H','1985','Buick','Corolla','345XYZ','WA','6','0005');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('JKLP7IIIJF','2001','Ford','Impala','902PLO','WA','8','0002');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('LPQW76200I','2000','Honda','Accord','123ABC','MT','4','0007');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('MNMJ7H6098','1999','Lincoln','Towne Car','234ABC','WA','8','0012');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('MVMN8974PP','1998','Honda','Civic DX','567TUV','WA','4','0009');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('PLJFVC5609','1997','Toyota','Landcruiser','876GYK','WA','4','0016');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('POIU980PLL','2001','Chevrolet','Cavalier','675THE','OR','4','0003');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('POOL98T90P','1998','Ford','Escort','678RST','WA','4','0011');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('QWER9LK982','1999','Pontiac','FireHawk','669GVI','WA','8','0001');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('QWSA870976','2000','Chevrolet','Cavalier','116UYT','WA','4','0014');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('SWQW345RT6','1999','BMW','320i','789GHI','CA','6','0004');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('TGVYY76R43','1995','Honda','Civic','980QAW','WA','4','0015');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('THYDF55639','2000','Ford','F-100','980QEW','WA','8','0005');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('TYYYI87590','2002','Toyota','Celica','890YUI','ID','6','0006');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('V121BHD481','1999','Toyota','Pick-up','190PGF','WA','6','0009');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('VHJK009L88','1997','Ford','Taurus','456MNO','WA','4','0013');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('WWQAA452P0','1996','Buick','Regal','123DEF','WA','8','0010');
+
+INSERT INTO Vehicle
+(VIN,Year,Make,Model,LicenseNo,VehState,VehCity,CustNo)
+VALUES ('XCVY760PIQ','2000','Toyota','Celica','477HSD','WA','4','0008');
+
+
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0001','10W-40 oil',145,1.00,'Quart');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0002','Oil Filter',14,2.00,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0003','Antifreeze',10, 3.95,'Quart');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0004','Spark Plugs', 45, 0.99,'item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0005','Transmission Fluid',15,1.50,'Quart');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0006','10W-30 Oil', 95,0.95,'Quart');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0007','Brake Lining', 25, 5.00,'Quart');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0008','Shock', 75, 6.00,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0009','Muffler', 10, 15.00,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0010','Tail Pipe', 85, 4.00,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0011','Head Gasket', 32, 9.00,'Dozen');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0012','Timing Chain', 6, 22.50,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0013','Battery', 13, 55.00,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0014','Radiator', 3, 60.00,'Item');
+
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0015','Radiator Hose', 24, 3.00,'Dozen');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0016','Rotor', 4, 16.00,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0017','Tire', 36, 46.00,'Item');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0018','Headlight', 6, 5.00,'Case');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0019','Tail Light', 7, 3.00,'Dozen');
+
+INSERT INTO Part
+(PartNo, PartDesc, PartStk, PartPPU, PartSz)
+VALUES ('0020','Gearbox', 2, 25.00,'Item');
+
+
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0001', 50000,TO_DATE('10/05/2005','MM/DD/YYYY'),'AZXS230I87');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0002',30000,TO_DATE('10/05/2005','MM/DD/YYYY'),'IOMEQ54397');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0003',6000,TO_DATE('10/07/2005 ','MM/DD/YYYY'),'JKLP7IIIJF');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0004',75000,TO_DATE('10/08/2005','MM/DD/YYYY'),'AZXS230I87');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0005',15000,TO_DATE('10/10/2005','MM/DD/YYYY'),'TYYYI87590');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0006',55000,TO_DATE('10/10/2005','MM/DD/YYYY'),'BHGY08631Q');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0007',25500,TO_DATE('10/11/2005','MM/DD/YYYY'),'V121BHD481');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0008',125000,TO_DATE('10/12/2005','MM/DD/YYYY'),'PLJFVC5609');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0009',60800,TO_DATE('10/15/2005','MM/DD/YYYY'),'XCVY760PIQ');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0010',11000,TO_DATE('10/16/2005','MM/DD/YYYY'),'THYDF55639');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0011',55060,TO_DATE('10/18/2005','MM/DD/YYYY'),'MNMJ7H6098');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0012',25600,TO_DATE('10/20/2005','MM/DD/YYYY'),'THYDF55639');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0013',56000,TO_DATE('10/20/2005','MM/DD/YYYY'),'QWER9LK982');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0014',22000,TO_DATE('10/22/2005','MM/DD/YYYY'),'QWER9LK982');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0015',14800,TO_DATE('10/25/2005','MM/DD/YYYY'),'JKLP7IIIJF');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0016',46000,TO_DATE('10/25/2005','MM/DD/YYYY'),'THYDF55639');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0017',71500,TO_DATE('10/30/2005','MM/DD/YYYY'),'MNMJ7H6098');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0018',15800,TO_DATE('11/01/2005','MM/DD/YYYY'),'MVMN8974PP');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0019',28525,TO_DATE('11/02/2005','MM/DD/YYYY'),'POIU980PLL');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0020',32560,TO_DATE('11/02/2005','MM/DD/YYYY'),'QWSA870976');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0021',72700,TO_DATE('11/05/2005','MM/DD/YYYY'),'IOMEQ54397');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0022',18900,TO_DATE('11/08/2005','MM/DD/YYYY'),'POOL98T90P');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0023',46590,TO_DATE('11/08/2005','MM/DD/YYYY'),'SWQW345RT6');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0024',34800,TO_DATE('11/12/2005','MM/DD/YYYY'),'TGVYY76R43');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0025',61800,TO_DATE('11/15/2005','MM/DD/YYYY'),'JHMEC3348H');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0026',55000,TO_DATE('11/20/2005','MM/DD/YYYY'),'V121BHD481');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0027',30800,TO_DATE('11/22/2005','MM/DD/YYYY'),'WWQAA452P0');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0028',17600,TO_DATE('11/22/2005','MM/DD/YYYY'),'XCVY760PIQ');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0029',20600,TO_DATE('11/25/2005','MM/DD/YYYY'),'AZXS230I87');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0030',22590,TO_DATE('11/27/2005','MM/DD/YYYY'),'BHGY08631Q');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0031',23000,TO_DATE('02/03/2006','MM/DD/YYYY'),'BHGY08631Q');
+
+INSERT INTO RepairOrder
+(RepOrdNo,RepOrdOdometer,RepOrdDate,VIN)
+VALUES  ('0032',15000,TO_DATE('12/01/2005','MM/DD/YYYY'),'BHGY08631Q');
+
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0001','0002', 1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0001','0003',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0002','0003',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0002','0004',5);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0003','0002',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0003','0003',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0003','0004',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0003','0020', 2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0005','0005',5);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0005','0006',5);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0005','0008',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0005','0014',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0005','0016',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0006','0007',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0006','0008',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0007','0001',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0008','0001',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0008','0002',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0008','0003',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0008','0004',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0009','0009',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0009','0010',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0010','0004',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0011','0003',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0011','0004',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0012','0001',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0012','0007',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0013','0007',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0013','0008',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0014','0003',6);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0014','0006',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0014','0014',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0015','0004',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0015','0020',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0016','0009',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0016','0014',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0017','0007',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0017','0013',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0018','0001',5);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0018','0004',6);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0019','0008',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0020','0007',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0020','0005',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0021','0015',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0021','0016',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0021','0017',3);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0021','0018',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0022','0001',5);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0022','0002',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0023','0004',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0023','0016',3);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0023','0020',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0024','0003',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0025','0010',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0025','0013',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0026','0014',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0027','0004',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0027','0007',4);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0028','0019',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0029','0004',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0029','0009',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0030','0002',1);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0030','0003',2);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0030','0006',6);
+
+INSERT INTO PartUsed
+(RepOrdNo,PartNo,QtyUsed)
+VALUES  ('0032','0008',2);
